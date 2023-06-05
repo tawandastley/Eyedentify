@@ -13,6 +13,7 @@
 		9D5474692A2CA3E20066CF37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D5474672A2CA3E20066CF37 /* Main.storyboard */; };
 		9D54746B2A2CA3E50066CF37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D54746A2A2CA3E50066CF37 /* Assets.xcassets */; };
 		9D54746E2A2CA3E50066CF37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D54746C2A2CA3E50066CF37 /* LaunchScreen.storyboard */; };
+		9D5474762A2CA63C0066CF37 /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9D5474752A2CA63C0066CF37 /* SqueezeNet.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		9D54746A2A2CA3E50066CF37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D54746D2A2CA3E50066CF37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D54746F2A2CA3E50066CF37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D5474752A2CA63C0066CF37 /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SqueezeNet.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		9D5474602A2CA3E20066CF37 /* Eyedentify */ = {
 			isa = PBXGroup;
 			children = (
+				9D5474752A2CA63C0066CF37 /* SqueezeNet.mlmodel */,
 				9D5474612A2CA3E20066CF37 /* AppDelegate.swift */,
 				9D5474632A2CA3E20066CF37 /* SceneDelegate.swift */,
 				9D5474652A2CA3E20066CF37 /* ViewController.swift */,
@@ -141,6 +144,7 @@
 				9D5474662A2CA3E20066CF37 /* ViewController.swift in Sources */,
 				9D5474622A2CA3E20066CF37 /* AppDelegate.swift in Sources */,
 				9D5474642A2CA3E20066CF37 /* SceneDelegate.swift in Sources */,
+				9D5474762A2CA63C0066CF37 /* SqueezeNet.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +294,7 @@
 				DEVELOPMENT_TEAM = 2MK2D93834;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eyedentify/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "we need to use your cammera to capture the images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -318,6 +323,7 @@
 				DEVELOPMENT_TEAM = 2MK2D93834;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eyedentify/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "we need to use your cammera to capture the images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
