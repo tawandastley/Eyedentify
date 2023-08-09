@@ -8,24 +8,40 @@
 import UIKit
 import CoreML
 import Vision
+import AVFoundation
+//import MobileCoreServices
+//import UniformTypeIdentifiers
+import Lottie
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
     let imagePicker = UIImagePickerController()
+    private var animationView: LottieAnimationView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = "Click camera icon to begin"
+        imageView.isHidden = true
+        titleLabel.text = "Select Source"
         imagePicker.delegate = self
-      //  imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
+        setupAnimation()
     }
+    
+    @IBAction func cameraTapped(_ sender: UIBarButtonItem) {
+        openCamera()
+    }
+    
+    @IBAction func galleryTapped(_ sender: Any) {
+        openGallery()
+    }
+    
+    //MARK: Delegate methods
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        print("i am tapped")
+        hideAnimation()
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageView.image = pickedImage
             guard let image = CIImage(image: pickedImage) else {
@@ -33,11 +49,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
             detectImage(image: image)
         }
+        Timer.scheduledTimer(withTimeInterval: 20, repeats: false) { _ in
+            self.showAnimation()
+        }
         imagePicker.dismiss(animated: true)
     }
     
-    func detectImage(image: CIImage) {
-        guard let model = try? VNCoreMLModel(for: SqueezeNet(()).model) else {
+    //MARK: Private methods
+    
+    private func detectImage(image: CIImage){
+        guard let model = try? VNCoreMLModel(for: MobileNetV2(configuration: .init()).model) else {
             fatalError()
         }
         let request = VNCoreMLRequest(model: model) { request, error in
@@ -45,80 +66,84 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 fatalError()
             }
             if let firstResult = results.first {
-                let confidence = (firstResult.confidence) * 100
-                self.titleLabel.isHidden = false
-                self.titleLabel.text = "\(firstResult.identifier.uppercased()) with \(confidence) % confidence"
+                let confidence = firstResult.confidence.rounded() * 100
+                self.titleLabel.text = "\(firstResult.identifier.uppercased()) \n\nConfidence: \t\(confidence)% "
+                self.titleLabel.font = .boldSystemFont(ofSize: 20)
+                self.titleLabel.textColor = .lightText
+                self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
+                self.titleLabel.layer.cornerRadius = 5
             }
         }
         
         let handler = VNImageRequestHandler(ciImage: image)
+        
         do {
             try handler.perform([request])
         }
         catch {
-            fatalError()
+            let alert = UIAlertController(
+                title: "Error",
+                message: error.localizedDescription,
+                preferredStyle: .actionSheet)
+            let action = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(action)
+            self.present(alert, animated: true)
         }
-    }
-    
-    @IBAction func cameraTapped(_ sender: UIBarButtonItem) {
         
-        let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
-            self.openCamera()
-            self.present(self.imagePicker, animated: true)
-        }))
-
-        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
-            self.openGallery()
-            self.present(self.imagePicker, animated: true)
-        }))
-
-        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
-        present(imagePicker, animated: true)
-        self.present(alert, animated: true, completion: nil)
-       
     }
-}
-
-extension SqueezeNet {
-    
-    convenience init(_ foo: Void) {
-        try! self.init(contentsOf: type(of:self).urlOfModelInThisBundle)
-    }
-}
-
-extension ViewController {
-    
-    func openCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
+    private func openCamera() {
+        
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera){
+            imagePicker.allowsEditing = true
             imagePicker.sourceType = UIImagePickerController.SourceType.camera
-            imagePicker.allowsEditing = false
-            self.present(imagePicker, animated: true, completion: nil)
-            
+            imagePicker.dismiss(animated: true)
+  
         }
         else {
-            let alert  = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            let alert  = UIAlertController(title: "Error",
+                                           message: "Failed to access the camera.",
+                                           preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK",
+                                          style: .default,
+                                          handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
+        
     }
-    
-    func openGallery() {
+    private func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
             imagePicker.allowsEditing = true
             imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
-            //imagePicker.dismiss(animated: true)
-            self.present(imagePicker, animated: true, completion: nil)
-            
+            imagePicker.mediaTypes = [UTType.image.identifier as String]
+            imagePicker.dismiss(animated: true)
+            self.present(imagePicker, animated: true)
         }
         else {
             let alert  = UIAlertController(title: "Warning", message: "You don't have permission to access gallery.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+   private func setupAnimation() {
+        animationView = .init(name: "scanAnimation")
+        animationView.frame = imageView.frame
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.animationSpeed = 1.5
+        view.addSubview(animationView)
+        animationView.play()
+    }
+    
+    private func hideAnimation() {
+        animationView.stop()
+        animationView.isHidden = true
+        imageView.isHidden = false
+    }
+    private func showAnimation() {
+        titleLabel.text = "Select Source"
+        animationView.play()
+        animationView.isHidden = false
+        imageView.isHidden = true
     }
 }

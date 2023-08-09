@@ -19,14 +19,24 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="d2K-Oh-0Zy">
                                 <rect key="frame" x="76" y="294" width="241" height="264"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="created by Tawanda" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLZ-6a-5YE">
+                                <rect key="frame" x="10" y="708" width="373" height="60"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="d2K-Oh-0Zy" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="DWc-eZ-o4u"/>
                             <constraint firstItem="d2K-Oh-0Zy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="235" id="Pjt-Qm-DKv"/>
+                            <constraint firstItem="hLZ-6a-5YE" firstAttribute="top" secondItem="d2K-Oh-0Zy" secondAttribute="bottom" constant="150" id="ZPA-2e-3vE"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hLZ-6a-5YE" secondAttribute="bottom" constant="50" id="Zs0-XJ-a9Y"/>
                             <constraint firstItem="d2K-Oh-0Zy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="76" id="rFD-Yi-s6b"/>
+                            <constraint firstItem="hLZ-6a-5YE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="tKE-nL-pIk"/>
                             <constraint firstItem="d2K-Oh-0Zy" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="tbO-bR-Pjr"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hLZ-6a-5YE" secondAttribute="trailing" constant="10" id="xlW-Q1-9vq"/>
                         </constraints>
                     </view>
                 </viewController>
