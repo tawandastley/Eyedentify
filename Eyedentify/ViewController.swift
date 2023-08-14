@@ -49,9 +49,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
             detectImage(image: image)
         }
-        Timer.scheduledTimer(withTimeInterval: 20, repeats: false) { _ in
-            self.showAnimation()
-        }
+//        Timer.scheduledTimer(withTimeInterval: 30, repeats: false) { _ in
+//            self.showAnimation()
+//        }
         imagePicker.dismiss(animated: true)
     }
     
