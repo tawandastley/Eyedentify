@@ -9,8 +9,6 @@ import UIKit
 import CoreML
 import Vision
 import AVFoundation
-//import MobileCoreServices
-//import UniformTypeIdentifiers
 import Lottie
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -26,8 +24,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageView.isHidden = true
         titleLabel.text = "Select Source"
         imagePicker.delegate = self
-        imagePicker.allowsEditing = true
         setupAnimation()
+        
     }
     
     @IBAction func cameraTapped(_ sender: UIBarButtonItem) {
@@ -39,20 +37,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //MARK: Delegate methods
-
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         hideAnimation()
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageView.image = pickedImage
+        if let pickedImage = info[.originalImage] as? UIImage {
             guard let image = CIImage(image: pickedImage) else {
+                print("unsupported image")
                 return
             }
             detectImage(image: image)
+            imageView.image = pickedImage
+            imageView.contentMode = .scaleAspectFit
+            AddSwipeGestures()
         }
-//        Timer.scheduledTimer(withTimeInterval: 30, repeats: false) { _ in
-//            self.showAnimation()
-//        }
         imagePicker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true)
     }
     
     //MARK: Private methods
@@ -67,11 +69,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
             if let firstResult = results.first {
                 let confidence = firstResult.confidence.rounded() * 100
-                self.titleLabel.text = "\(firstResult.identifier.uppercased()) \n\nConfidence: \t\(confidence)% "
-                self.titleLabel.font = .boldSystemFont(ofSize: 20)
-                self.titleLabel.textColor = .lightText
-                self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
-                self.titleLabel.layer.cornerRadius = 5
+                
+                if confidence  < 50 {
+                    self.titleLabel.text = "\(firstResult.identifier.lowercased()) ??? \n\nConfidence: \(confidence)% 😩"
+                    self.titleLabel.font = .italicSystemFont(ofSize: 20)
+                    DispatchQueue.main.async {
+                        Alerts.showAlert(title: "⚠️", message: "Please try again or choose a different image")
+                    }
+                } else {
+                    self.titleLabel.text = "\(firstResult.identifier.uppercased()) \n\nConfidence: \(confidence)% 😎"
+                    self.titleLabel.font = .boldSystemFont(ofSize: 20)
+                    self.titleLabel.textColor = .lightText
+                    self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
+                    self.titleLabel.layer.cornerRadius = 5
+                }
             }
         }
         
@@ -81,34 +92,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             try handler.perform([request])
         }
         catch {
-            let alert = UIAlertController(
-                title: "Error",
-                message: error.localizedDescription,
-                preferredStyle: .actionSheet)
-            let action = UIAlertAction(title: "OK", style: .default)
-            alert.addAction(action)
-            self.present(alert, animated: true)
+            Alerts.showAlert(title: "Error", message: error.localizedDescription)
         }
         
     }
     private func openCamera() {
         
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera){
-            imagePicker.allowsEditing = true
-            imagePicker.sourceType = UIImagePickerController.SourceType.camera
-            imagePicker.dismiss(animated: true)
-  
+            imagePicker.sourceType = .camera
+            imagePicker.cameraDevice = .rear
+            imagePicker.cameraFlashMode = .auto
+            imagePicker.mediaTypes = [UTType.image.identifier]
+            imagePicker.delegate = self // Don't forget this line
+            present(imagePicker, animated: true)
         }
         else {
-            let alert  = UIAlertController(title: "Error",
-                                           message: "Failed to access the camera.",
-                                           preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK",
-                                          style: .default,
-                                          handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            Alerts.showAlert(title: "Error", message: "Failed to access the camera.")
         }
-        
     }
     private func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
@@ -119,13 +119,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.present(imagePicker, animated: true)
         }
         else {
-            let alert  = UIAlertController(title: "Warning", message: "You don't have permission to access gallery.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            Alerts.showAlert(title: "Warning", message: "You don't have permission to access gallery.")
         }
     }
     
-   private func setupAnimation() {
+    private func setupAnimation() {
         animationView = .init(name: "scanAnimation")
         animationView.frame = imageView.frame
         animationView.contentMode = .scaleAspectFit
@@ -141,9 +139,29 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageView.isHidden = false
     }
     private func showAnimation() {
+        
         titleLabel.text = "Select Source"
         animationView.play()
         animationView.isHidden = false
         imageView.isHidden = true
     }
+    
+    private func AddSwipeGestures() {
+        
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(PerformGesture(_ :)))
+        gesture.direction = .right
+        imageView.addGestureRecognizer(gesture)
+        imageView.isUserInteractionEnabled = true
+        
+    }
+    
+    @objc private func PerformGesture(_ gesture: UISwipeGestureRecognizer) {
+        
+        if gesture.direction == .left {
+            showAnimation()
+        } else if gesture.direction == .right{
+            showAnimation()
+        }
+    }
+    
 }
