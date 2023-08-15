@@ -42,13 +42,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         hideAnimation()
         if let pickedImage = info[.originalImage] as? UIImage {
             guard let image = CIImage(image: pickedImage) else {
-                print("unsupported image")
                 return
             }
             detectImage(image: image)
             imageView.image = pickedImage
             imageView.contentMode = .scaleAspectFit
-            AddSwipeGestures()
+            addSwipeGestures()
         }
         imagePicker.dismiss(animated: true)
     }
@@ -73,6 +72,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 if confidence  < 50 {
                     self.titleLabel.text = "\(firstResult.identifier.lowercased()) ??? \n\nConfidence: \(confidence)% 😩"
                     self.titleLabel.font = .italicSystemFont(ofSize: 20)
+                    
                     DispatchQueue.main.async {
                         Alerts.showAlert(title: "⚠️", message: "Please try again or choose a different image")
                     }
@@ -146,17 +146,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageView.isHidden = true
     }
     
-    private func AddSwipeGestures() {
+    private func addSwipeGestures() {
         
-        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(PerformGesture(_ :)))
-        gesture.direction = .right
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(performGesture(_:)))
         imageView.addGestureRecognizer(gesture)
         imageView.isUserInteractionEnabled = true
         
     }
     
-    @objc private func PerformGesture(_ gesture: UISwipeGestureRecognizer) {
-        
+    @objc private func performGesture(_ gesture: UISwipeGestureRecognizer) {
         if gesture.direction == .left {
             showAnimation()
         } else if gesture.direction == .right{
