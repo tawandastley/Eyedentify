@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9D01110D2A8E820200E6CFA8 /* LocalisedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D01110C2A8E820200E6CFA8 /* LocalisedExtensions.swift */; };
 		9D17C8812A8BEAB4003AF555 /* DesignableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D17C8802A8BEAB4003AF555 /* DesignableLabel.swift */; };
+		9D32FD152A90C1E8009D3B6A /* SFSymbolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D32FD142A90C1E8009D3B6A /* SFSymbolButton.swift */; };
+		9D32FD172A90CA68009D3B6A /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D32FD162A90CA68009D3B6A /* Alert.swift */; };
 		9D5474622A2CA3E20066CF37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5474612A2CA3E20066CF37 /* AppDelegate.swift */; };
 		9D5474642A2CA3E20066CF37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5474632A2CA3E20066CF37 /* SceneDelegate.swift */; };
 		9D5474662A2CA3E20066CF37 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5474652A2CA3E20066CF37 /* ViewController.swift */; };
@@ -28,6 +30,8 @@
 		9D01110B2A8DF67400E6CFA8 /* zu-ZA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zu-ZA"; path = "zu-ZA.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		9D01110C2A8E820200E6CFA8 /* LocalisedExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalisedExtensions.swift; sourceTree = "<group>"; };
 		9D17C8802A8BEAB4003AF555 /* DesignableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableLabel.swift; sourceTree = "<group>"; usesTabs = 0; };
+		9D32FD142A90C1E8009D3B6A /* SFSymbolButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSymbolButton.swift; sourceTree = "<group>"; };
+		9D32FD162A90CA68009D3B6A /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		9D54745E2A2CA3E20066CF37 /* Eyedentify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eyedentify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D5474612A2CA3E20066CF37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D5474632A2CA3E20066CF37 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +91,8 @@
 				9D17C8802A8BEAB4003AF555 /* DesignableLabel.swift */,
 				9D5474652A2CA3E20066CF37 /* ViewController.swift */,
 				9D01110C2A8E820200E6CFA8 /* LocalisedExtensions.swift */,
+				9D32FD142A90C1E8009D3B6A /* SFSymbolButton.swift */,
+				9D32FD162A90CA68009D3B6A /* Alert.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -212,6 +218,8 @@
 				9D5474662A2CA3E20066CF37 /* ViewController.swift in Sources */,
 				9D5474622A2CA3E20066CF37 /* AppDelegate.swift in Sources */,
 				9D5474642A2CA3E20066CF37 /* SceneDelegate.swift in Sources */,
+				9D32FD152A90C1E8009D3B6A /* SFSymbolButton.swift in Sources */,
+				9D32FD172A90CA68009D3B6A /* Alert.swift in Sources */,
 				9D17C8812A8BEAB4003AF555 /* DesignableLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +399,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eyedentify/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "we need to use your cammera to capture the images";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Eyedentify needs Photo library to save images";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Eyedentify needs Photo library to save images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -420,6 +430,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eyedentify/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "we need to use your cammera to capture the images";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Eyedentify needs Photo library to save images";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Eyedentify needs Photo library to save images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
