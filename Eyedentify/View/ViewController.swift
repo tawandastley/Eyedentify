@@ -15,14 +15,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    
+    var classificationResults : [String] = []
     let imagePicker = UIImagePickerController()
     private var animationView: LottieAnimationView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.isHidden = true
-        titleLabel.text = "Select Source"
+        titleLabel.text = "SelectSource".localized
         imagePicker.delegate = self
         setupAnimation()
         
@@ -55,14 +55,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true)
     }
+}
+
+extension ViewController {
     
     //MARK: Private methods
     
     private func detectImage(image: CIImage){
         guard let model = try? VNCoreMLModel(for: MobileNetV2(configuration: .init()).model) else {
-            fatalError()
+            showAlertAndExit()
+            return
         }
-        let request = VNCoreMLRequest(model: model) { request, error in
+        let request = VNCoreMLRequest(model: model) { [self] request, error in
             guard let results = request.results as? [VNClassificationObservation] else {
                 fatalError()
             }
@@ -70,19 +74,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 let confidence = firstResult.confidence.rounded() * 100
                 
                 if confidence  < 50 {
-                    self.titleLabel.text = "\(firstResult.identifier.lowercased()) ??? \n\nConfidence: \(confidence)% 😩"
+                    self.titleLabel.text = "\(firstResult.identifier.lowercased()) ??? \nConfidence: \(confidence)% 🫣"
                     self.titleLabel.font = .italicSystemFont(ofSize: 20)
+                    self.titleLabel.backgroundColor = UIColor(white: 0.5, alpha: 0.8)
                     
-                    DispatchQueue.main.async {
-                        Alerts.showAlert(title: "⚠️", message: "Please try again or choose a different image")
-                    }
                 } else {
-                    self.titleLabel.text = "\(firstResult.identifier.uppercased()) \n\nConfidence: \(confidence)% 😎"
+                    self.titleLabel.text = "\(firstResult.identifier.uppercased()) \nConfidence: \(confidence)% 😎"
                     self.titleLabel.font = .boldSystemFont(ofSize: 20)
                     self.titleLabel.textColor = .lightText
                     self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
                     self.titleLabel.layer.cornerRadius = 5
                 }
+                showAlert(title: "Error".localized, message: error?.localizedDescription)
             }
         }
         
@@ -92,10 +95,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             try handler.perform([request])
         }
         catch {
-            Alerts.showAlert(title: "Error", message: error.localizedDescription)
+            showAlert(title: "Error".localized, message: error.localizedDescription)
         }
         
     }
+    
+    func showAlert(title: String?, message: String?, completion: (() -> Void)? = nil) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            return
+        }
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK".localized, style: .default) { _ in
+            completion?()
+        }
+        alertController.addAction(action)
+        rootViewController.present(alertController, animated: true, completion: nil)
+    }
+    
     private func openCamera() {
         
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera){
@@ -107,20 +124,35 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             present(imagePicker, animated: true)
         }
         else {
-            Alerts.showAlert(title: "Error", message: "Failed to access the camera.")
+            showAlert(title: "Error".localized, message: "CameraError".localized)
         }
     }
+    
     private func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
             imagePicker.allowsEditing = true
-            imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+           // imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
             imagePicker.mediaTypes = [UTType.image.identifier as String]
-            imagePicker.dismiss(animated: true)
+            //imagePicker.dismiss(animated: true)
             self.present(imagePicker, animated: true)
         }
         else {
-            Alerts.showAlert(title: "Warning", message: "You don't have permission to access gallery.")
+            showAlert(title: "Warning".localized, message: "GalleryError".localized)
         }
+    }
+    
+    private func showAlertAndExit() {
+        let alertController = UIAlertController(
+            title: "Error",
+            message: "An error occurred. The app will now exit.",
+            preferredStyle: .alert
+        )
+        
+        let exitAction = UIAlertAction(title: "Exit", style: .destructive) { _ in
+            fatalError("Forced app termination")
+        }
+        alertController.addAction(exitAction)
+        present(alertController, animated: true, completion: nil)
     }
     
     private func setupAnimation() {
@@ -138,9 +170,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         animationView.isHidden = true
         imageView.isHidden = false
     }
+    
     private func showAnimation() {
         
-        titleLabel.text = "Select Source"
+        titleLabel.text = "SelectSource".localized
         animationView.play()
         animationView.isHidden = false
         imageView.isHidden = true
@@ -161,5 +194,4 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             showAnimation()
         }
     }
-    
 }

@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Eyedentify
+
+  Created by Tawanda Chandiwana on 2023/08/16.
+  
+*/
+"SelectSource" = "Sélectionner la source";
+"Warning" = "Avertissement";
+"Error" = "Erreur";
+"ImageError" = "Veuillez réessayer ou choisir une autre image";
+"CameraError" = "Impossible d'accéder à la caméra.";
+"GalleryError" = "Vous n'êtes pas autorisé à accéder à la galerie.";
+"OK" = "Bien";

@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  Eyedentify
+
+  Created by Tawanda Chandiwana on 2023/08/16.
+  
+*/
+"Error" = "خطأ";
+"ImageError" = "
+يرجى المحاولة مرة أخرى أو اختيار صورة مختلفة
+";
+"CameraError" = "فشل الوصول إلى الكاميرا.";
+

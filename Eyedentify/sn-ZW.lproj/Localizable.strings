@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Eyedentify
+
+  Created by Tawanda Chandiwana on 2023/08/16.
+  
+*/
+"SelectSource" = "Sarudza kune mufananidzo";
+"Warning" = "Yambiro";
+"OK" = "Horait Bhoo";
+"Error" = "Zvadhakwa";
+"ImageError" = "Ukuona chii? mufananidzo uyu wakadhakwa";
+"CameraError" = "bhoo here Camera";
+"GalleryError" = "Mu gallery hamusi kupindika.";
