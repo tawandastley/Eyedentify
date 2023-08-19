@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Eyedentify
+
+  Created by Tawanda Chandiwana on 2023/08/16.
+  
+*/
+
+"SelectSource" = "Khetha umthombo";
+"Warning" = "Isilumkiso";
+"Error" = "Impazamo";
+"ImageError" = "Nceda uzame kwakhona okanye ukhethe umfanekiso owahlukileyo";
+"CameraError" = "Ayiphumelelanga ukufikelela kwikhamera.";
+"GalleryError" = "Awunayo imvume yokufikelela kwigalari.";
+"OK" = "Kulungile";

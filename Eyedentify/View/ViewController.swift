@@ -28,6 +28,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         createFloatingActionButton()
         setupAnimation()
         imageView.isHidden = true
+        symbolButton.isHidden = true
         titleLabel.text = "SelectSource".localized
         
     }
@@ -178,11 +179,13 @@ extension ViewController: SFSymbolButtonDelegate {
         animationView.play()
         animationView.isHidden = false
         imageView.isHidden = true
+        symbolButton.isHidden = true
     }
     
     private func addSwipeGestures() {
         
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(performGesture(_:)))
+        gesture.direction = .right
         imageView.addGestureRecognizer(gesture)
         imageView.isUserInteractionEnabled = true
         
@@ -200,10 +203,8 @@ extension ViewController: SFSymbolButtonDelegate {
     }
     
     @objc private func performGesture(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.direction == .left {
+        if gesture.direction == .right {
             showAnimation()
-        } else if gesture.direction == .up{
-            FABTapped()
         }
     }
 }
