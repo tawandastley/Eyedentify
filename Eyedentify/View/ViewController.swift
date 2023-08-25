@@ -15,6 +15,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet var containerView: UIView!
     var classificationResults : [String] = []
     let viewModel = ImageClassificationViewModel()
     let imagePicker = UIImagePickerController()
@@ -51,23 +52,38 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 return
             }
             viewModel.detectImage(image: image, completion: { results in
-                if let firstResult = results.first {
-                    let confidence = firstResult.confidence.rounded() * 100
-                    
-                    if confidence  < 50 {
-                        self.titleLabel.text = "\(firstResult.identifier) ??? \nConfidence: 🫣"
-                        self.titleLabel.font = .italicSystemFont(ofSize: 20)
-                        self.titleLabel.backgroundColor = UIColor(white: 0.5, alpha: 0.8)
+                //                if let firstResult = results.first {
+                //                    let confidence = firstResult.confidence.rounded() * 100
+                //
+                //                    if confidence  < 50 {
+                //                        self.titleLabel.text = "\(firstResult.identifier) ??? \nConfidence: 🫣"
+                //                        self.titleLabel.font = .italicSystemFont(ofSize: 20)
+                //                        self.titleLabel.backgroundColor = UIColor(white: 0.5, alpha: 0.8)
+                //
+                //                    } else {
+                //                        self.titleLabel.text = "\(firstResult.identifier.uppercased()) \nConfidence: \(confidence)% 😎"
+                //                        self.titleLabel.font = .boldSystemFont(ofSize: 20)
+                //                        self.titleLabel.textColor = .lightText
+                //                        self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
+                //                        self.titleLabel.layer.cornerRadius = 5
+                //                    }
+                //
+                //                }
+                var yOffset: CGFloat = 20.0 // Initial y-offset
+                while results.count <= 5 {
+                    for text in results {
                         
-                    } else {
-                        self.titleLabel.text = "\(firstResult.identifier.uppercased()) \nConfidence: \(confidence)% 😎"
-                        self.titleLabel.font = .boldSystemFont(ofSize: 20)
-                        self.titleLabel.textColor = .lightText
-                        self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
-                        self.titleLabel.layer.cornerRadius = 5
+                        let label = UILabel()
+                        label.frame = CGRect(x: 20, y: yOffset, width: self.containerView.frame.width - 40, height: 30)
+                        label.text = text.identifier
+                        label.textColor = UIColor.black
+                        label.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
+                        self.containerView.addSubview(label)
+                        
+                        yOffset += label.frame.height + 1 // Increase y-offset for the next label
                     }
-                    
                 }
+                self.titleLabel.text = results.first?.identifier
                 self.imageView.image = pickedImage
                 self.imageView.contentMode = .scaleAspectFit
                 self.addSwipeGestures()
@@ -139,6 +155,7 @@ extension ViewController: SFSymbolButtonDelegate {
     
     private func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
+            
             imagePicker.allowsEditing = true
             imagePicker.mediaTypes = [UTType.image.identifier as String]
             self.present(imagePicker, animated: true)

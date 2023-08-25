@@ -51,6 +51,10 @@ class ImageClassificationViewModel {
             }
             alertController.addAction(exitAction)
         }
+        else  {
+            let action = UIAlertAction(title: "OK", style: .default)
+            alertController.addAction(action)
+        }
         
         rootViewController.present(alertController, animated: true, completion: nil)
     }

@@ -70,6 +70,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="containerView" destination="8bC-Xf-vdC" id="x8z-x7-XBt"/>
                         <outlet property="imageView" destination="SX1-NC-bHU" id="MOj-Xs-gMe"/>
                         <outlet property="titleLabel" destination="DMj-FJ-Z54" id="VLu-sB-JTG"/>
                     </connections>
@@ -85,7 +86,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="ohB-IM-ya7"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uE2-wj-AAV">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
