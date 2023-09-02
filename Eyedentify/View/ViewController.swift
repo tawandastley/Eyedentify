@@ -27,6 +27,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imagePicker.delegate = self
         createFloatingActionButton()
         setupAnimation()
+        addSwipeGestures()
         imageView.isHidden = true
         symbolButton.isHidden = true
         titleLabel.text = "SelectSource".localized
@@ -99,28 +100,11 @@ extension ViewController: SFSymbolButtonDelegate {
             return
         }
         symbolButton.isHidden = false
-        // Share the screenshot
-        let activityViewController = UIActivityViewController(activityItems: [screenshot], applicationActivities: nil)
-        let twitterType = UIActivity.ActivityType(rawValue: "com.apple.social.twitter")
-        activityViewController.excludedActivityTypes?.append(twitterType)
-        activityViewController.popoverPresentationController?.sourceView = self.view
-        activityViewController.popoverPresentationController?.sourceRect = symbolButton.frame
-        self.present(activityViewController, animated: true, completion: nil)
-        
+        shareScreenshot(screenshot: screenshot)
         
     }
     
-    func takeScreenshot() -> UIImage? {
-        let renderer = UIGraphicsImageRenderer(bounds: view.bounds)
-        let screenshot = renderer.image { _ in
-            view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-            symbolButton.isHidden = true
-        }
-        
-        return screenshot
-    }
-    
-    //MARK: Private methods
+    //MARK: Camera and Gallery
     
     private func openCamera() {
         
@@ -148,19 +132,48 @@ extension ViewController: SFSymbolButtonDelegate {
         }
     }
     
+    func takeScreenshot() -> UIImage? {
+        let renderer = UIGraphicsImageRenderer(bounds: view.bounds)
+        let screenshot = renderer.image { _ in
+            view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
+            symbolButton.isHidden = true
+        }
+        
+        return screenshot
+    }
+    
+    private func shareScreenshot(screenshot: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [screenshot], applicationActivities: nil)
+        let twitterType = UIActivity.ActivityType(rawValue: "com.apple.social.twitter")
+        activityViewController.excludedActivityTypes?.append(twitterType)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        activityViewController.popoverPresentationController?.sourceRect = symbolButton.frame
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    //MARK: Animations and Floating Action Button
+    
+    private func createFloatingActionButton() {
+        symbolButton = SFSymbolButton(symbolName: "square.and.arrow.up.fill")
+        symbolButton.tintColor = .label
+        symbolButton.delegate = self
+        symbolButton.translatesAutoresizingMaskIntoConstraints = false
+        symbolButton.isHidden = true
+        view.addSubview(symbolButton)
+        symbolButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+        symbolButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
+    }
+    
     private func setupAnimation() {
         animationView = .init(name: "scanAnimation")
-        animationView.translatesAutoresizingMaskIntoConstraints = false // Add this line
+        animationView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(animationView)
-        
-        // Set up constraints to center the animationView
-        NSLayoutConstraint.activate([
+            NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             animationView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-            animationView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.5), // Adjust the multiplier as needed
-            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor) // Maintain aspect ratio
+            animationView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.5),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
-        
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
         animationView.animationSpeed = 1.5
@@ -182,29 +195,36 @@ extension ViewController: SFSymbolButtonDelegate {
         symbolButton.isHidden = true
     }
     
+    // MARK: Swipe Gestures
+    
     private func addSwipeGestures() {
         
-        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(performGesture(_:)))
-        gesture.direction = .right
-        imageView.addGestureRecognizer(gesture)
+        let rightGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleRightSwipe(_:)))
+        rightGesture.view?.backgroundColor = .blue
+        rightGesture.direction = .right
+        imageView.addGestureRecognizer(rightGesture)
         imageView.isUserInteractionEnabled = true
         
+        let leftGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe(_:)))
+        leftGesture.view?.backgroundColor = .red
+        leftGesture.direction = .left
+        imageView.addGestureRecognizer(leftGesture)
+        imageView.isUserInteractionEnabled = true
     }
     
-    private func createFloatingActionButton() {
-        symbolButton = SFSymbolButton(symbolName: "square.and.arrow.up.fill")
-        symbolButton.tintColor = .label
-        symbolButton.delegate = self
-        symbolButton.translatesAutoresizingMaskIntoConstraints = false
-        symbolButton.isHidden = true
-        view.addSubview(symbolButton)
-        symbolButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
-        symbolButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
-    }
-    
-    @objc private func performGesture(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.direction == .right {
+    @objc func handleLeftSwipe(_ gestureRecognizer: UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .recognized {
             showAnimation()
+        }
+    }
+    
+    @objc func handleRightSwipe(_ gestureRecognizer: UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .recognized {
+            guard let image = takeScreenshot() else {
+                viewModel.showAlert(title: "Error".localized, message: "Select image to analyze")
+                return
+            }
+            shareScreenshot(screenshot: image)
         }
     }
 }
