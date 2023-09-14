@@ -66,6 +66,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         self.titleLabel.textColor = .lightText
                         self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
                         self.titleLabel.layer.cornerRadius = 5
+                        print("https://factanimal.com/\(firstResult.identifier)")
                     }
                     
                 }
@@ -125,6 +126,7 @@ extension ViewController: SFSymbolButtonDelegate {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
             imagePicker.allowsEditing = true
             imagePicker.mediaTypes = [UTType.image.identifier as String]
+            imagePicker.delegate = self
             self.present(imagePicker, animated: true)
         }
         else {
