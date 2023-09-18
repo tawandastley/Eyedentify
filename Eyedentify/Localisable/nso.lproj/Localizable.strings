@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Eyedentify
+
+  Created by Tawanda Chandiwana on 2023/08/16.
+  
+*/
+"SelectSource" = "kgetha e tee";
+"Warning" = "Hlokomela";
+"Error" = "Bothata";
+"ImageError" = "Leka gape goba o kgethe seswantsho se sengwe ";
+"CameraError" = "Kgetho ya gago gase ya phomelela.";
+"GalleryError" = "Gaona tumelelo yagotsena dinepeng";
+"OK" = "Golukile";

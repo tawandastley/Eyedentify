@@ -66,7 +66,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         self.titleLabel.textColor = .lightText
                         self.titleLabel.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
                         self.titleLabel.layer.cornerRadius = 5
-                        print("https://factanimal.com/\(firstResult.identifier)")
+                        
                     }
                     
                 }
@@ -124,6 +124,7 @@ extension ViewController: SFSymbolButtonDelegate {
     
     private func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
+            imagePicker.sourceType = .photoLibrary
             imagePicker.allowsEditing = true
             imagePicker.mediaTypes = [UTType.image.identifier as String]
             imagePicker.delegate = self
@@ -135,12 +136,11 @@ extension ViewController: SFSymbolButtonDelegate {
     }
     
     func takeScreenshot() -> UIImage? {
-        let renderer = UIGraphicsImageRenderer(bounds: view.bounds)
+        let renderer = UIGraphicsImageRenderer(bounds: imageView.bounds)
         let screenshot = renderer.image { _ in
             view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
             symbolButton.isHidden = true
         }
-        
         return screenshot
     }
     
@@ -157,8 +157,8 @@ extension ViewController: SFSymbolButtonDelegate {
     
     private func createFloatingActionButton() {
         symbolButton = SFSymbolButton(symbolName: "square.and.arrow.up.fill")
-        symbolButton.tintColor = .label
         symbolButton.delegate = self
+        symbolButton.tintColor = .label
         symbolButton.translatesAutoresizingMaskIntoConstraints = false
         symbolButton.isHidden = true
         view.addSubview(symbolButton)

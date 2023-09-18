@@ -49,6 +49,9 @@
 		9D9593B72A8CEA3D00586982 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		9D9836882A8277B00027A286 /* MobileNetV2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNetV2.mlmodel; sourceTree = "<group>"; };
 		9D98368A2A8375840027A286 /* scanAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scanAnimation.json; sourceTree = "<group>"; };
+		9DEB432A2AB31E19003673C6 /* nso */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nso; path = nso.lproj/Main.strings; sourceTree = "<group>"; };
+		9DEB432B2AB31E19003673C6 /* nso */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nso; path = nso.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		9DEB432C2AB31E19003673C6 /* nso */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nso; path = nso.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9DEBF0AB2A8CEAF700EFF95B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9DEBF0AD2A8CEB0900EFF95B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9DEBF0AE2A8CEB5900EFF95B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -210,6 +213,7 @@
 				"xh-ZA",
 				"sn-ZW",
 				"zu-ZA",
+				nso,
 			);
 			mainGroup = 9D5474552A2CA3E20066CF37;
 			packageReferences = (
@@ -269,6 +273,7 @@
 				9DEBF0B02A8CEF3F00EFF95B /* xh-ZA */,
 				9DEBF0B32A8CEF5B00EFF95B /* sn-ZW */,
 				9D0111092A8DF67400E6CFA8 /* zu-ZA */,
+				9DEB432A2AB31E19003673C6 /* nso */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 				9DEBF0B12A8CEF3F00EFF95B /* xh-ZA */,
 				9DEBF0B42A8CEF5B00EFF95B /* sn-ZW */,
 				9D01110A2A8DF67400E6CFA8 /* zu-ZA */,
+				9DEB432B2AB31E19003673C6 /* nso */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -297,6 +303,7 @@
 				9DEBF0B22A8CEF3F00EFF95B /* xh-ZA */,
 				9DEBF0B52A8CEF5B00EFF95B /* sn-ZW */,
 				9D01110B2A8DF67400E6CFA8 /* zu-ZA */,
+				9DEB432C2AB31E19003673C6 /* nso */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -430,7 +437,7 @@
 				DEVELOPMENT_TEAM = 2MK2D93834;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eyedentify/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "we need to use your cammera to capture the images";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Eyedentify needs to use your camera to capture the images";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Eyedentify needs Photo library to save images";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Eyedentify needs Photo library to save images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -461,7 +468,7 @@
 				DEVELOPMENT_TEAM = 2MK2D93834;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Eyedentify/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "we need to use your cammera to capture the images";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Eyedentify needs to use your camera to capture the images";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Eyedentify needs Photo library to save images";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Eyedentify needs Photo library to save images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
